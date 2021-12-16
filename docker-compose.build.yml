@@ -2,7 +2,7 @@ version: '3'
 
 services:
   adchpp:
-    image: ivunchata/adchpp:3.0.0
+    build: .
     volumes:
       - ./etc/config:/app/config
       # - ./etc/certs:/app/certs

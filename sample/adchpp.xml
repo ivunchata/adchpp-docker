@@ -92,8 +92,8 @@
 		<Server Port="2780" TLS="1" Certificate="certs/cacert.pem" PrivateKey="certs/privkey.pem" TrustedPath="certs/trusted/" DHParams="certs/dhparam.pem"/ MinVersion="3" SecurityLevel="2" 
 		CipherSuites1_3="TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256">
 		-->
-		<Server Port="2780" TLS="1" Certificate="certs/cacert.pem" PrivateKey="certs/privkey.pem" TrustedPath="certs/trusted/" DHParams="certs/dhparam.pem"/>
-		<!-- <Server Port="2780"/> -->
+		<!-- <Server Port="2113"/> -->
+		<Server Port="2780" TLS="1" Certificate="/app/certs/cacert.pem" PrivateKey="/app/certs/privkey.pem" TrustedPath="/app/certs/trusted/" DHParams="/app/certs/dhparam.pem"/>
 	</Servers>
 
 	<!-- Instead of scripts, ADCH++ uses plugins. Plugins can do the same work
