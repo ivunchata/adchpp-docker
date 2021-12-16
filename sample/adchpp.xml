@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<ADCHubPlusPlus>
+
+<!-- IMPORTANT: under Linux, you should use absolute paths in the various path settings 
+	of this configuration file -->
+
+	<Settings>
+
+<!-- Hub name and message of the day -->
+		<!-- This is the name of the hub as it should be reported to the clients during
+			 login and to the hub registration services. -->
+		<HubName type="string">ADCH++</HubName>
+		<Description type="string">ADCH++ Test hub</Description>
+
+<!-- Logging -->
+		<!-- Enable/disable logging -->
+		<Log type="int">1</Log>
+
+		<!-- Logging, when enabled, is done to this file. The filename is first passed
+			 through strftime with the current time (see any standard c library reference
+			 to find out what works...). There's not much logging done at all btw, but
+			 plugins can use the logs as well... -->
+		<LogFile type="string">logs/adchpp%Y%m.log</LogFile>
+
+<!-- Advanced connection settings (don't change unless you at least think you know what you're doing) -->
+
+		<!-- Maximum send size, changes how much data is sent at most to a single user per
+			 call to the socket api. Experiment with this, lower settings might be more fair
+			 in the distribution of available bandwidth at the cost of network/cpu efficiency.
+			 Don't set below 256, 0 = disable. Experiment with this, it has many strange effects! -->
+		<!-- TODO this setting is currently ignored.
+		<MaxSendSize type="int">1400</MaxSendSize>
+		-->
+
+		<!-- Maximum size of an incoming ADC command. Receving a larger command than this results 
+			 the client getting disconnected. 0 = disable the check. -->
+		<MaxCommandSize type="int">16384</MaxCommandSize>
+
+		<!-- Buffer size, this is the minimum buffer size that is initially assigned to
+			 each user. Larger buffer = more memory usage / user, less = a little bit
+			 slower performance if the user sends more than these many bytes at a time
+			 (in a chat message for instance...). Don't set to lower than 256. -->
+		<BufferSize type="int">1024</BufferSize>
+		<MaxBufferSize type="int">16384</MaxBufferSize>
+
+		<!-- Milliseconds before a user is disconnected when his/her outgoing buffer
+			 becomes larger than MaxRecvSize (outgoing buffer overflow). -->
+		<OverflowTimeout type="int">60000</OverflowTimeout>
+
+		<!-- Percentage of the total usercount allowed to have overflowing buffers 
+			 before new user logins are refused by the hub with 'not enough bandwidth'
+			 error message. Small percentages defend the hub getting out of bandwith and
+			 increase the chance of refusing new users while large values are more graceful
+			 to the connecting users but increasingly endangering the hub stability.
+			 Note that this setting is ignored as long as the total number of users with
+			 overflowing buffers is less than 4. -->
+		<OverflowLimit type="unsignedByte">25</OverflowLimit>
+
+		<!-- Timeout (ms) before ADCH++ stops trying to empty its send buffer for a user
+			 (to send a kick message for example), and disconnects him/her. -->
+		<DisconnectTimeout type="int">10000</DisconnectTimeout>
+
+		<!-- Timeout (ms) before disconnecting users whose login process is taking too long. -->
+		<LogTimeout type="int">10000</LogTimeout>
+	</Settings>
+
+	<Servers>
+		<!--
+		One <Server> tag per listening connection.
+
+		To create secure connections, set TLS="1" and define the following (preferably absolute)
+		paths: Certificate, PrivateKey, TrustedPath, DHParams. An example secure server setting:
+		<Server Port="2780" TLS="1" Certificate="certs/cacert.pem" PrivateKey="certs/privkey.pem" TrustedPath="certs/trusted/" DHParams="certs/dhparam.pem"/>
+
+		Simple OpenSSL commands to generate files used for secure connections:
+		openssl genrsa -out privkey.pem 2048
+		openssl req -new -x509 -key privkey.pem -out cacert.pem -days 1095
+		openssl dhparam -outform PEM -out dhparam.pem 1024
+
+		Alternatively, you can use the cert generator contributed on
+		<http://launchpadlibrarian.net/31960965/Cert_Generator.7z>.
+
+		ADCH++ requires TLS protocol version 1.2 or later by default. To change this and other
+		TLS connection parameters you can optionally define the following settings: 
+
+		MinVersion, minumum TLS protocol version. Values: 0 => 1.0; 1 => 1.1; 2 => 1.2; 3 -> 1.3.
+		Default = 2
+		SecurityLevel, connection security level. Values: 0...5. Default = 1. More information : https://www.openssl.org/docs/man1.1.1/man3/SSL_CTX_get_security_level.html
+		CipherSuite1_3, List of TLSv1.3 ciphersuite names in order of preference. More information : https://www.openssl.org/docs/man1.1.1/man3/SSL_CTX_set_ciphersuites.html
+
+		An example of secure server with non-default TLS connection parameters:
+		<Server Port="2780" TLS="1" Certificate="certs/cacert.pem" PrivateKey="certs/privkey.pem" TrustedPath="certs/trusted/" DHParams="certs/dhparam.pem"/ MinVersion="3" SecurityLevel="2" 
+		CipherSuites1_3="TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256">
+		-->
+		<Server Port="2780" TLS="1" Certificate="certs/cacert.pem" PrivateKey="certs/privkey.pem" TrustedPath="certs/trusted/" DHParams="certs/dhparam.pem"/>
+		<!-- <Server Port="2780"/> -->
+	</Servers>
+
+	<!-- Instead of scripts, ADCH++ uses plugins. Plugins can do the same work
+		 as scripts, are more difficult to write, but when it comes to performance,
+		 the difference between the two is absurd. This way, it's also possible to
+		 write a script plugin, enabling people to choose their own script language,
+		 if someone's written a script plugin for it. You must specify the path to your
+		 plugins in linux default place it looks for the plugin path is /home/<username>/adchpp/ -->
+		 
+	<!--Plugins Path="~/adchpp/"-->
+	
+	<Plugins>
+		<!-- This plugins provides the scripting support. -->
+		<Plugin>Script</Plugin>
+		<!-- Bloom filter plugin, helps save upload bandwidth at a slight expense of memory and download bandwidth -->
+		<Plugin>Bloom</Plugin>
+	</Plugins>
+</ADCHubPlusPlus>

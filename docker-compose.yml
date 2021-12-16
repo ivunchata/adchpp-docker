@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  adchpp:
+    build: .
+    volumes:
+      - ./etc/config:/app/config
+      # - ./etc/certs:/app/certs
+      # - ./etc/plugins:/app/plugins
+    ports:
+      - 2780:2780
+    
