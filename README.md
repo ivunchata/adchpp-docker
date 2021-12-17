@@ -19,8 +19,6 @@ Configure, then:
 docker run -v $PWD/etc/config:/app/config -p 2780:2780 ivunchata/adchpp:3.0.0
 ```
 
-The container uses `CMD` (instead of `ENTRYPOINT`) so that it can be explored and tinkered with.
-
 ## docker-compose
 
 Configure, then:

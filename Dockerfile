@@ -22,6 +22,10 @@ RUN sh generate_certs.sh
 
 FROM debian:buster-slim
 
+# s6 overlay
+ADD https://github.com/just-containers/s6-overlay/releases/download/v2.2.0.3/s6-overlay-amd64.tar.gz /tmp/
+RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C / && rm -f /tmp/s6-overlay-amd64.tar.gz
+
 WORKDIR /app
 
 ARG VERSION
@@ -33,4 +37,7 @@ RUN apt-get update && \
     mkdir -p /usr/local/lib/lua/5.1 && \
     cp /app/bin/luadchpp.so /usr/local/lib/lua/5.1/luadchpp.so
 
-CMD ["/app/bin/adchppd", "-c", "/app/config"]
+ENTRYPOINT ["/init"]
+
+ADD ./util/run.sh .
+CMD ["/app/run.sh"]
