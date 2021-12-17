@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<ScriptPlugin>
+    <Engine language="lua" scriptPath="/app/bin/scripts/">
+        <Script>access.lua</Script>
+        <Script>access.bans.lua</Script>
+        <Script>access.guard.lua</Script>
+        <Script>access.op.lua</Script>
+        <Script>access.bot.lua</Script>
+        <Script>history.lua</Script>
+        <Script>texts.lua</Script>
+    </Engine>
+</ScriptPlugin>

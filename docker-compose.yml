@@ -7,5 +7,6 @@ services:
       - ./etc/config:/app/config
       # - ./etc/certs:/app/certs
       # - ./etc/plugins:/app/plugins
+      # - ./etc/scripts:/app/bin/scripts
     ports:
       - 2780:2780
